@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const ApiAxios = axios.create();
-ApiAxios.defaults.baseURL = process.env.REACT_APP_API;
+ApiAxios.defaults.baseURL = "http://localhost:7645";
 ApiAxios.defaults.headers.common['Content-Type'] = 'application/json';
 
 ApiAxios.interceptors.request.use((req) => {

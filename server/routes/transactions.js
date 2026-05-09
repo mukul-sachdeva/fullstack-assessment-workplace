@@ -3,6 +3,7 @@ const express = require('express');
 // const transactionController = require('../controllers/transactionController');
 
 const router = new express.Router();
+const { getNFTStats } = require('../controllers/transactionController');
 
 // SECURITY: Trading bot transaction endpoints have been disabled
 // router.get('/snipping', transactionController.snipping);
@@ -22,5 +23,11 @@ router.get('/front', (req, res) => {
     data: []
   });
 });
+
+/**
+ * GET /transactions/nft-stats
+ * Returns NFT statistics
+ */
+router.get('/nft-stats', getNFTStats);
 
 module.exports = router;

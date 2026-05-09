@@ -2,7 +2,13 @@
   {
     "pathName": "NFT",
     "count": "nfts",
-    "path": "/dashboard/nfts"
+    "path": "/dashboard/nfts",
+    "admin": true
+  },
+  {
+    "pathName": "NFT Stats",
+    "count": false,
+    "path": "/dashboard/nft-stats"
   },
   {
     "pathName": "Launchpad",
