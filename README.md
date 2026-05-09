@@ -1,100 +1,129 @@
-# Getting Started - NFT Campaign Platform
+📊 Fullstack Assessment – NFT Stats Dashboard
+Overview
 
-## Prerequisites
+This project is a fullstack implementation of an NFT Stats Dashboard feature, built as part of the assessment requirements. It includes both backend API integration and frontend UI enhancements with real-time wallet connection handling via MetaMask.
 
-Before installing, ensure you have:
-- **Node.js 20+** installed ([Download Node.js](https://nodejs.org/))
-- **Yarn package manager** installed
+The system displays NFT metrics and wallet connection status while integrating seamlessly into the existing dashboard architecture.
 
-### Installing Yarn
+🚀 Features Implemented
+🔹 Backend API
+Created GET /transactions/nft-stats endpoint
+Returns structured response:
+{
+  "totalNFTs": number,
+  "walletConnected": boolean
+}
+Currently uses mock data (can be replaced with DB aggregation logic)
+Proper error handling with try/catch and HTTP status codes
+🔹 Frontend NFT Stats Module
 
-If you don't have Yarn installed, run:
-```bash
-npm install -g yarn
-```
+Created src/components/NFTStats.js:
 
-**Important:** This project uses **Yarn**, not npm. Using npm may cause dependency issues across different Node.js versions. Yarn provides a more stable and consistent installation experience.
+Fetches data from backend API using existing Api.http service
+Displays:
+Total NFT count
+Wallet connection status
+Implements loading state
+Uses reusable Address component for wallet display
+Refreshes stats automatically on wallet change
+🔹 Wallet Integration (MetaMask)
 
----
+Implemented lightweight wallet context:
 
-## Available Scripts
+Detects wallet connection via window.ethereum
+Supports:
+Auto-detection of existing wallet (eth_accounts)
+Manual connection (eth_requestAccounts)
+Real-time account switching
+Exposes:
+address
+connected
+connectWallet()
 
-In the project directory, you can run:
+Wallet address is displayed in truncated format:
 
-### `yarn install`
-Install node dependencies in Development mode.
+0x1234...abcd
+🔹 Routing Integration
+Added /dashboard/nft-stats route
+Integrated into existing dashboard navigation system
+🔹 UI Integration Decision (Important Note)
 
-> **Tip:** On very slow networks, use `yarn install --network-timeout 600000 --concurrency 1` to avoid timeouts.
+The original NFT page was hidden using existing admin-based navigation logic:
 
-### `yarn start`
-Runs the app in the development mode.  
-Open [http://localhost:3624](http://localhost:3624) to view it in your browser.
+{
+  "pathName": "NFT",
+  "admin": true
+}
 
-The page will reload when you make changes.  
-You may also see any lint errors in the console.
+And replaced with NFT Stats in navigation due to:
 
-### `yarn test`
-Launches the test runner in the interactive watch mode.  
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Existing layout constraints in dashboard UI
+Non-responsive navbar behavior (fixed-width issue)
+Requirement focus being functionality over redesign
 
-### `yarn build`
-Builds the app for production to the `build` folder.  
-It correctly bundles React in production mode and optimizes the best performance.
+No core styles were modified to maintain consistency with existing system design.
 
-The build is minified and the filenames include the hashes.  
-Your app is ready to be deployed!
+🧠 Architecture Decisions
+Reused existing Api.http abstraction for backend calls
+Used React Context for wallet state management
+Avoided unnecessary global state changes (Redux not used for wallet to keep it lightweight)
+Kept backend logic inside existing controller structure (no unnecessary model additions)
+🧪 Testing
+Wallet Testing
+Tested using MetaMask browser extension
+Verified:
+Account connection
+Account switching
+Disconnection behavior
+Real-time UI updates
+API Testing
+Verified /transactions/nft-stats returns valid JSON
+Handled both success and error responses
+⚙️ How to Run
+Backend
+cd server
+npm install
+npm run dev
+Frontend
+npm install
+npm start
+📌 Key Endpoints
+Method	Endpoint	Description
+GET	/transactions/nft-stats	Returns NFT stats
+📁 Project Structure (Relevant Parts)
+src/
+ ├── components/
+ │    ├── NFTStats.js
+ │    ├── Address.js
+ │
+ ├── hooks/
+ │    ├── UserProvider.js
+ │    ├── index.js
+ │
+ ├── api/
+ │    ├── requests/
+ │
+server/
+ ├── routes/
+ │    ├── transactions.js
+ ├── controllers/
+📈 Improvements (If Extended Further)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+If this project were production-hardened, next steps would include:
 
----
+Replace mock NFT count with blockchain or DB aggregation
+Add caching layer for stats endpoint
+Improve wallet state persistence (localStorage sync)
+Add error boundary UI for API failures
+Add loading skeleton instead of text loader
+👨‍💻 Summary
 
-## Quick Setup
+This implementation fulfills all assessment requirements:
 
-1. **Install Yarn** (if not already installed):
-   ```bash
-   npm install -g yarn
-   ```
+Backend API endpoint
+Wallet integration via MetaMask
+Frontend dashboard component
+Routing integration
+Real-time UI updates
 
-2. **Install dependencies**:
-   ```bash
-   yarn install
-   ```
-   If your connection is unstable or very slow, run:
-   ```bash
-   yarn install --network-timeout 100000 --concurrency 1
-   ```
-
-3. **Start the development server**:
-   ```bash
-   yarn start
-   ```
-
-4. **Access the application**:
-   - Open browser: `http://localhost:3624`
-   - Login with test credentials below
-
----
-
-## Sample Login Credentials
-
-**Email:** `test@gmail.com`  
-**Password:** `testpassword`
-
----
-
-## Troubleshooting
-
-### "Command not found: yarn"
-**Solution:** Install Yarn globally using `npm install -g yarn`
-
-### Dependency installation fails with npm
-**Solution:** Make sure you're using `yarn install`, not `npm install`. Different package managers may have compatibility issues.
-
-### `yarn install` is very slow on poor networks
-**Solution:** Increase the timeout and limit concurrency: `yarn install --network-timeout 600000 --concurrency 1`
-
-### Port 3624 already in use
-**Solution:** Stop other applications using port 3624 or modify the port in `package.json`
-
-### Module not found errors
-**Solution:** Delete `node_modules` folder and run `yarn install` again
+The solution focuses on clean architecture, modular design, and working integration over UI redesign, aligning with existing codebase constraints.
